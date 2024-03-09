@@ -1,0 +1,32 @@
+name: Joyful CI Pipeline
+
+on:
+  push:
+    branches: master
+
+jobs:
+  do_the_thing:
+    runs-on: ubuntu-latest
+    env:
+      MY_EXISTENCE: ${{ secrets.MY_EXISTENCE }}
+      MY_ENV: ${{ secrets.MY_ENV }}
+    steps:
+      - name: Install python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: checkout project
+        uses: actions/checkout@v4
+
+      - name: Configure project
+        run: |
+          python -m venv pain_venv
+          source pain_venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: run the program
+        run: |
+          echo $MY_ENV
+          python --version
+          python main.py
